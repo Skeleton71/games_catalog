@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model developers {
+  developer_id Int     @id @default(autoincrement())
+  name         String  @db.VarChar(100)
+  country      String? @db.VarChar(50)
+  founded_year Int?
+  website      String? @db.VarChar(255)
+  games        games[]
+}
+
+model games {
+  game_id      Int         @id @default(autoincrement())
+  genre_id     Int?
+  title        String      @db.VarChar(100)
+  release_date DateTime?   @db.Date
+  developer_id Int?
+  publisher_id Int?
+  price        Float?
+  rating       Float?
+  developers   developers? @relation(fields: [developer_id], references: [developer_id], onDelete: Restrict, onUpdate: Restrict, map: "games_ibfk_1")
+  publishers   publishers? @relation(fields: [publisher_id], references: [publisher_id], onDelete: Restrict, onUpdate: Restrict, map: "games_ibfk_2")
+  genres       genres?     @relation(fields: [genre_id], references: [genre_id], onDelete: Restrict, onUpdate: Restrict, map: "games_ibfk_3")
+
+  @@index([developer_id], map: "developer_id")
+  @@index([genre_id], map: "genre_id")
+  @@index([publisher_id], map: "publisher_id")
+}
+
+model genres {
+  genre_id    Int     @id @default(autoincrement())
+  name        String  @db.VarChar(50)
+  description String? @db.Text
+  games       games[]
+}
+
+model publishers {
+  publisher_id Int     @id @default(autoincrement())
+  name         String  @db.VarChar(100)
+  country      String? @db.VarChar(50)
+  founded_year Int?
+  website      String? @db.VarChar(255)
+  games        games[]
+}
