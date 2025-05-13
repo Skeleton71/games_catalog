@@ -1,5 +1,3 @@
-'use client'
-
 import Link from "next/link";
 import EditButtonGenres from "./EditButtonGenres";
 import AddButtonGenres from "./AddButtonGenres";
@@ -9,14 +7,19 @@ export default function FormGenres({ genres }) {
     if (!genres || genres.length === 0) {
         return <div className="no-genres">
             <h1>No genres</h1>
-            <Link href="/genres/add" className="add-button">
-                Add genres
+            <Link href="/genres/add" className="btn--plus">
+                <Image
+                    src="/UI/plus+.svg"
+                    alt="add genre"
+                    width={54}
+                    height={54}
+                />
             </Link>
         </div>
     }
 
-    return <div className="genres-container">
-        <div className="genres-header">
+    return <div className="table-container">
+        <div className="table-header">
             <h1>Genre games</h1>
             <AddButtonGenres />
         </div>

@@ -98,30 +98,23 @@ h1 {
   border-radius: 0.5em;
 }
 
-.genres-container {
+.table-container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 30px auto;
   padding: 20px;
 }
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
+  padding: 30px;
+  }
 .controls {
   margin-bottom: 20px;
 }
 
-.add-button {
-  display: inline-block;
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 15px;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
 
-.add-button:hover {
-  background-color: #45a049;
-  transform: scale(1.05);
-}
 
 .table-wrapper {
   overflow-x: auto;
@@ -211,6 +204,7 @@ h1 {
   background-color: #d32f2f;
   transform: scale(1.05);
 }
+.btn--plus {}
 
 .btn--close {
   background: none;

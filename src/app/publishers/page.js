@@ -1,14 +1,15 @@
-import { getAllGenres } from "@/actions/genresActions";
-import FormGenres from "../components/genres/FormGenres";
+import { getAllPublishers } from "@/actions/publishersActions";
+import FormPublishers from "../components/publishers/FormPublishers";
 
+export default async function PublishersPage() {
+  const publisher = await getAllPublishers()
 
+  if (!publisher?.length) return <h2>No publishers</h2>
 
-export default async function GenresPage() {
-  const genres = await getAllGenres()
 
   return (
-    <div className="genres">
-      <FormGenres genres={genres} />
+    <div className="publisher">
+      <FormPublishers publishers={publisher} />
     </div>
   )
 }

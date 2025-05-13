@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ModalGenres from "./ModalGenres";
-
+import Image from "next/image";
 export default function AddButtonGenres() {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -18,11 +18,16 @@ export default function AddButtonGenres() {
     return (
         <>
             {isOpen && <ModalGenres genre={genre} onClose={onClose} title={"Add"} />}
-            <button
-                type="submit"
-                className="btn btn--edit"
-                onClick={() => setIsOpen(!isOpen)}>Add Genre
-            </button>
+
+            <Image
+                className="btn"
+                src="/UI/plus+.svg"
+                alt="add genre"
+                onClick={() => setIsOpen(!isOpen)}
+                width={54}
+                height={54}
+            />
+
         </>
     )
 }

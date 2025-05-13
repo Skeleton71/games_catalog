@@ -1,19 +1,19 @@
 
 
-import { deleteDeveloper } from "@/actions/developersActions";
+import { deletePublisher } from "@/actions/publishersActions"
 import DeleteButton from "@/components/DeleteButton";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function FormDevelopers({ developers }) {
+export default function FormPublishers({ publishers }) {
 
-    if (!developers || developers.length === 0) {
-        return <div className="no-developers">
-            <h1>No developers</h1>
-            <Link href="/developers/add" className="btn--plus">
+    if (!publishers || publishers.length === 0) {
+        return <div className="no-publishers">
+            <h1>No publishers</h1>
+            <Link href="/publishers/add" className="btn--plus">
                 <Image
                     src="/UI/plus+.svg"
-                    alt="add developers"
+                    alt="add publishers"
                     width={54}
                     height={54}
                 />
@@ -23,11 +23,11 @@ export default function FormDevelopers({ developers }) {
 
     return <div className="table-container">
         <div className="table-header">
-            <h1>Developers</h1>
-            <Link href={`/developers/add/`} className="btn--plus">
+            <h1>Publishers</h1>
+            <Link href={`/publishers/add/`} className="btn--plus">
                 <Image
                     src="/UI/plus+.svg"
-                    alt="add developers"
+                    alt="add publishers"
                     width={54}
                     height={54}
                 />
@@ -46,18 +46,19 @@ export default function FormDevelopers({ developers }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {developers.map((g) => {
-                        return <tr key={g.developer_id}>
-                            <td>{g.developer_id}</td>
+                    {publishers.map((g) => {
+                        return <tr key={g.publisher_id}>
+                            <td>{g.publisher_id}</td>
                             <td>{g.name}</td>
                             <td>{g.country || '—'}</td>
                             <td>{g.founded_year || '—'}</td>
                             <td>{g.website || '—'}</td>
                             <td className="actions">
-                                <Link href={`/developers/edit/${g.developer_id}`}>
+                                <Link href={`/publishers/edit/${g.publisher_id}`}>
                                     <button type="submit" className="btn btn--edit">Edit</button>
                                 </Link>
-                                <DeleteButton id={g.developer_id} fn={deleteDeveloper} />
+                                <DeleteButton id={g.publisher_id} fn={deletePublisher} />
+
 
                             </td>
                         </tr>
