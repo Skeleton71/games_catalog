@@ -42,9 +42,6 @@ export async function updateGenre(genreId, name, description) {
             });
         }
 
-
-        console.log(updatedGenre);
-
         revalidatePath('/genres')
         return updatedGenre
     } catch (error) {

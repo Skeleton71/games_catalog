@@ -11,7 +11,7 @@ export default function DeleteButton({ id, fn }) {
 
         try {
             const res = await fn(id)
-            console.log("res", res);
+
 
             if (res.message) setMsg(res.message)
         } catch (err) {

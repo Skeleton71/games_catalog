@@ -41,11 +41,8 @@ export default function FormEditPublisher({ data }) {
     setError('')
 
     try {
-      console.log("handleSubmit", data);
+ const res = await updatePublisher(formData)
 
-      const res = await updatePublisher(formData)
-
-      console.log("res", res);
 
       if (!res) throw new Error('Publisher update error')
       else if (res.message) setError(res.message)
@@ -56,10 +53,6 @@ export default function FormEditPublisher({ data }) {
       setIsSubmitting(false)
     }
   }
-  console.log("formData", formData);
-
-
-  console.log("data", data);
 
   if (!data) return null
 
@@ -95,7 +88,6 @@ export default function FormEditPublisher({ data }) {
               name="country"
               defaultValue={formData.country}
               onChange={handleChange}
-
               maxLength={50}
               minLength={3}
             />
@@ -109,7 +101,6 @@ export default function FormEditPublisher({ data }) {
               name="founded_year"
               defaultValue={formData.founded_year}
               onChange={handleChange}
-              required
               maxLength={4}
             />
           </div>
@@ -122,7 +113,6 @@ export default function FormEditPublisher({ data }) {
               name="website"
               defaultValue={formData.website}
               onChange={handleChange}
-              required
               maxLength={50}
             />
           </div>

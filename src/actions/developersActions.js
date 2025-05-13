@@ -25,8 +25,6 @@ export async function addDeveloper(name, description) {
 export async function updateDeveloper(formData) {
     let updatedDeveloper;
 
-    console.log("formData", formData);
-
     const founded_year = Number(formData.founded_year)
 
     if (!founded_year || (founded_year && (founded_year < 1900 || founded_year > 2100))) {
@@ -48,9 +46,6 @@ export async function updateDeveloper(formData) {
             });
         }
 
-
-        console.log(updatedDeveloper);
-
         revalidatePath('/developers')
         return updatedDeveloper
     } catch (error) {
@@ -61,8 +56,6 @@ export async function updateDeveloper(formData) {
 
 
 export async function getDeveloperById(developerId) {
-    console.log(developerId);
-
     try {
         const developer = await prisma.developers.findUnique({
             where: { developer_id: developerId },

@@ -1,10 +1,10 @@
 'use client'
 
-import { updateGame } from "@/actions/gamesActions";
+import { updatePublisher } from "@/actions/publishersActions";
 import { useRouter } from "next/navigation"
 import { useState } from "react";
 
-export default function FormAddGame() {
+export default function FormAddPublisher() {
   const router = useRouter()
 
   const [formData, setFormData] = useState({
@@ -31,7 +31,7 @@ export default function FormAddGame() {
     e.preventDefault()
 
     if (!formData.name) {
-      setError('Game name is required')
+      setError('Publisher name is required')
       return
     }
 
@@ -39,26 +39,22 @@ export default function FormAddGame() {
     setError('')
 
     try {
-      const res = await updateGame(formData)
+      const res = await updatePublisher(formData)
 
-      console.log("res", res);
-
-      if (!res) throw new Error('Game update error')
+      if (!res) throw new Error('Publisher update error')
       else if (res.message) setError(res.message)
-      else router.push(`/games`)
+      else router.push(`/publishers`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Oops! Something went wrong')
     } finally {
       setIsSubmitting(false)
     }
   }
-  console.log("formData", formData);
-
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2>Add game</h2>
+          <h2>Add publisher</h2>
           {/* <button onClick={onClose} className="btn--close">
             &times;
           </button> */}
@@ -66,7 +62,7 @@ export default function FormAddGame() {
 
         <form onSubmit={handleSubmit} className="genre-form">
           <div className="form-group">
-            <label htmlFor="name">Game name *</label>
+            <label htmlFor="name">Publisher name *</label>
             <input
               type="text"
               id="name"
@@ -116,7 +112,7 @@ export default function FormAddGame() {
           <div className="form-actions">
             <button
               type="button"
-              onClick={() => router.push(`/games`)}
+              onClick={() => router.push(`/publishers`)}
               className="cancel-button"
               disabled={isSubmitting}
             >

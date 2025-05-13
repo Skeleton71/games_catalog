@@ -43,8 +43,6 @@ export default function ModalGenres({ genre, onClose, title }) {
     try {
       const response = await updateGenre(genre.genre_id, formData.name, formData.description)
 
-      console.log("response", response);
-
       if (!response) {
         throw new Error('Genre update error')
       }
@@ -56,8 +54,6 @@ export default function ModalGenres({ genre, onClose, title }) {
       setIsSubmitting(false)
     }
   }
-  console.log("formData", formData);
-
   if (!genre) return null
 
   return (

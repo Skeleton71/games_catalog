@@ -1,13 +1,11 @@
 'use client'
 
-import { updateGame } from "@/actions/gamesActions";
+import { AddGame } from "@/actions/gamesActions";
 import { useRouter } from "next/navigation"
 import { useState } from "react";
 
 export default function FormAddGame({ dataForSelectors }) {
   const router = useRouter()
-
-  console.log("dataForSelectors", dataForSelectors);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -21,19 +19,7 @@ export default function FormAddGame({ dataForSelectors }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSelectChange = (e) => {
-    console.log(e);
-
-    // const { name, value } = e.target
-
-    // setFormData(prev => ({
-    //   ...prev,
-    //   [name]: value
-    // }))
-  }
-
   const handleChange = (e) => {
-    console.log(e.target.value);
 
     const { name, value } = e.target
 
@@ -58,9 +44,7 @@ export default function FormAddGame({ dataForSelectors }) {
 
 
     try {
-      const res = await updateGame(formData)
-
-      console.log("res", res);
+      const res = await AddGame(formData)
 
       if (!res) throw new Error('Game update error')
       else if (res.message) setError(res.message)
@@ -71,7 +55,6 @@ export default function FormAddGame({ dataForSelectors }) {
       setIsSubmitting(false)
     }
   }
-  console.log("formData", formData);
 
   return (
     <div className="modal-overlay">
@@ -154,11 +137,11 @@ export default function FormAddGame({ dataForSelectors }) {
           <div className="form-group">
             <label htmlFor="price">Price</label>
             <input
-              type="text"
+              type="number"
               id="price"
               name="price"
               onChange={handleChange}
-
+              step={0.01}
             />
           </div>
 
@@ -169,6 +152,7 @@ export default function FormAddGame({ dataForSelectors }) {
               id="rating"
               name="rating"
               onChange={handleChange}
+              step={0.01}
             />
           </div>
 

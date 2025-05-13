@@ -7,12 +7,10 @@ import { prisma } from '../lib/prisma'
 export async function updatePublisher(formData) {
     let updatedPublisher;
 
-    console.log("formData", formData);
-
     const founded_year = Number(formData.founded_year)
 
     if (!founded_year || (founded_year && (founded_year < 1900 || founded_year > 2100))) {
-        return { message: 'Invalid Founded year', type: 'error' }
+        return { message: 'The year must be in the range of 1900-2100!', type: 'error' }
     }
 
     formData.founded_year = founded_year

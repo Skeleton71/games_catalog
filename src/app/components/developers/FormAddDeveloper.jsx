@@ -41,7 +41,6 @@ export default function FormAddDeveloper() {
     try {
       const res = await updateDeveloper(formData)
 
-      console.log("res", res);
 
       if (!res) throw new Error('Developer update error')
       else if (res.message) setError(res.message)
@@ -52,7 +51,6 @@ export default function FormAddDeveloper() {
       setIsSubmitting(false)
     }
   }
-  console.log("formData", formData);
 
   return (
     <div className="modal-overlay">

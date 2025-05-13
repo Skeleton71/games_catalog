@@ -41,11 +41,7 @@ export default function FormEditDeveloper({ data }) {
     setError('')
 
     try {
-      console.log("handleSubmit", data);
-
       const res = await updateDeveloper(formData)
-
-      console.log("res", res);
 
       if (!res) throw new Error('Developer update error')
       else if (res.message) setError(res.message)
@@ -56,11 +52,6 @@ export default function FormEditDeveloper({ data }) {
       setIsSubmitting(false)
     }
   }
-  console.log("formData", formData);
-
-
-  console.log("data", data);
-
   if (!data) return null
 
   return (

@@ -4,10 +4,54 @@ import { revalidatePath } from 'next/cache'
 import { prisma } from '../lib/prisma'
 
 
-export async function updateGame(formData) {
+export async function EditGame(formData) {
     let updatedGame;
+    console.log(formData);
 
-    console.log("formData", formData);
+    const game_id = Number(formData.get("game_id"))
+    const genre_id = Number(formData.get("genre_id"))
+    const title = formData.get("title")
+    const release_date = formData.get("release_date")
+    const developer_id = Number(formData.get("developer_id"))
+    const publisher_id = Number(formData.get("publisher_id"))
+    const price = Number(formData.get("price")) || 0
+    const rating = Number(formData.get("rating")) || 0
+
+    const data = {
+        title,
+        price,
+        rating,
+        genre_id: genre_id || null,
+        developer_id: developer_id || null,
+        publisher_id: publisher_id || null,
+        release_date: release_date ? new Date(release_date) : null
+    }
+    console.log(data);
+
+    // const founded_year = Number(formData.founded_year)
+
+    // if (!founded_year || (founded_year && (founded_year < 1900 || founded_year > 2100))) {
+    //     return { message: 'Invalid Founded year', type: 'error' }
+    // }
+
+    // formData.founded_year = founded_year
+
+    try {
+        updatedGame = await prisma.games.update({
+            where: { game_id },
+            data
+        });
+
+        revalidatePath('/games')
+        return updatedGame
+    } catch (error) {
+        console.error('Error updating game:', error)
+        return { message: 'Error updating game', type: 'error' }
+    }
+}
+
+export async function AddGame(formData) {
+    let updatedGame;
 
     // Преобразуем в правильные типы
     const data = {
@@ -19,7 +63,7 @@ export async function updateGame(formData) {
         publisher_id: Number(formData.publisher_id) ? Number(formData.publisher_id) : null,
         release_date: (formData.release_date) ? new Date(formData.release_date) : null // булево значени
     }
-    console.log("data", data);
+
     // const founded_year = Number(formData.founded_year)
 
     // if (!founded_year || (founded_year && (founded_year < 1900 || founded_year > 2100))) {
@@ -69,9 +113,6 @@ export async function getAllGames() {
             include: { genres: true, developers: true, publishers: true }
 
         })
-
-        console.log('res :>> ', res);
-
 
         const newArr = res.map((el) => {
             const genre = el.genres?.name

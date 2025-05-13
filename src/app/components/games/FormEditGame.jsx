@@ -1,150 +1,159 @@
 'use client'
 
-import { updateGame } from "@/actions/gamesActions"
-import { usePathname, useRouter } from "next/navigation"
-import { useEffect, useState } from "react";
+import { EditGame } from "@/actions/gamesActions";
+import { useRouter } from "next/navigation"
+import { useState } from "react";
 
-export default function FormEditGame({ data }) {
+export default function FormAddGame({ data, dataForSelectors }) {
   const router = useRouter()
 
-  const path = usePathname().split("/")[1]
+  const [title, setTitle] = useState(data.title)
+  const [genre_id, setGenre_id] = useState(data.genre_id)
+  const [release_date, setRelease_date] = useState(data.release_date)
+  const [developer_id, setDeveloper_id] = useState(data.developer_id)
+  const [publisher_id, setPublisher_id] = useState(data.publisher_id)
+  const [price, setPrice] = useState(data.price)
+  const [rating, setRating] = useState(data.rating)
 
-  const [formData, setFormData] = useState({
-    name: '',
-    country: '',
-    founded_year: '',
-    website: ''
-  })
+  console.log(developer_id, "developer_id");
+
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    if (data) {
-      setFormData(data)
-    }
-  }, [data])
-
-  const handleChange = (e) => {
-    const { name, value } = e.target
-
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!data) return
-
+  const handleSubmit = async (formData) => {
     setIsSubmitting(true)
     setError('')
 
+    formData.set("game_id", data.game_id)
+
     try {
-      console.log("handleSubmit", data);
-
-      const res = await updateGame(formData)
-
-      console.log("res", res);
+      const res = await EditGame(formData)
 
       if (!res) throw new Error('Game update error')
       else if (res.message) setError(res.message)
-      else router.push(`/${path}`)
+      else router.push(`/games`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Oops! Something went wrong')
     } finally {
       setIsSubmitting(false)
     }
   }
-  console.log("formData", formData);
-
-
-  console.log("data", data);
-
-  if (!data) return null
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
           <h2>Edit game</h2>
-          {/* <button onClick={onClose} className="btn--close">
-            &times;
-          </button> */}
         </div>
 
-        <form onSubmit={handleSubmit} className="genre-form">
+        <form action={handleSubmit} className="genre-form">
           <div className="form-group">
             <label htmlFor="name">Game name *</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              defaultValue={formData.name}
-              onChange={handleChange}
-              required
+              id="title"
+              name="title"
+              defaultValue={title}
+              onChange={(e) => setTitle(e.target.value)}
               maxLength={50}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="country">Country</label>
+            <select
+              name="genre_id"
+              id="genre_id"
+              defaultValue={genre_id}
+              onChange={(e) => setGenre_id(e.target.value)}
+              className=""
+            >
+              <option value="0">Select a genre</option>
+              {dataForSelectors.genresList.map(g => {
+                return <option key={g.genre_id} value={g.genre_id}>
+                  {g.name}
+                </option>
+              })}
+            </select>
+          </div>
+
+
+          <div className="form-group">
+            <label htmlFor="Release_date">Release_date</label>
             <input
-              type="text"
-              id="country"
-              name="country"
-              defaultValue={formData.country}
-              onChange={handleChange}
-
-              maxLength={50}
-              minLength={3}
+              type="date"
+              id="release_date"
+              name="release_date"
+              defaultValue={new Date(release_date).toISOString().slice(0, 10) || '—'}
+              onChange={(e) => setRelease_date(e.target.value)}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="founded_year">Founded year</label>
+            <select
+              name="developer_id"
+              id="developer_id"
+              onChange={(e) => setDeveloper_id(e.target.value)}
+              defaultValue={developer_id}
+              className=""
+            >
+              <option value="0">Select a developer</option>
+              {dataForSelectors.developersList.map(g => {
+                return <option key={g.developer_id} value={g.developer_id}>
+                  {g.name}
+                </option>
+              })}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <select
+              name="publisher_id"
+              id="publisher_id"
+              onChange={(e) => setPublisher_id(e.target.value)}
+              defaultValue={publisher_id}
+              className=""
+            >
+              <option value="0">Select a publisher</option>
+              {dataForSelectors.publishersList.map(g => {
+                return <option key={g.publisher_id} value={g.publisher_id}>
+                  {g.name}
+                </option>
+              })}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="price">Price</label>
             <input
               type="number"
-              id="founded_year"
-              name="founded_year"
-              defaultValue={formData.founded_year}
-              onChange={handleChange}
-              required
-              maxLength={4}
+              step={0.01}
+              id="price"
+              name="price"
+              defaultValue={price}
+              onChange={(e) => setPrice(e.target.value)}
+
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="website">Website</label>
+            <label htmlFor="rating">Rating</label>
             <input
-              type="text"
-              id="website"
-              name="website"
-              defaultValue={formData.website}
-              onChange={handleChange}
-              required
-              maxLength={50}
+              type="number"
+              step={0.01}
+              id="rating"
+              name="rating"
+              defaultValue={rating}
+              onChange={(e) => setRating(e.target.value)}
             />
           </div>
-
-          {/* <div className="form-group">
-            <label htmlFor="counrty">Country</label>
-            <textarea
-              id="counrty"
-              name="counrty"
-              defaultValue={formData.country}
-              onChange={handleChange}
-              rows={2}
-              maxLength={100}
-            />
-          </div> */}
 
           {error && <div className="error-message">{error}</div>}
 
           <div className="form-actions">
             <button
               type="button"
-              onClick={() => router.push(`/${path}`)}
+              onClick={() => router.push(`/games`)}
               className="cancel-button"
               disabled={isSubmitting}
             >
@@ -153,7 +162,7 @@ export default function FormEditGame({ data }) {
             <button
               type="submit"
               className="submit-button"
-              disabled={isSubmitting || !formData.name}
+              disabled={isSubmitting || !title}
             >
               {isSubmitting ? 'Saving...' : 'Save canges'}
             </button>

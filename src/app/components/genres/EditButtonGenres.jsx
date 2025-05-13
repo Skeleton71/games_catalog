@@ -20,7 +20,6 @@ export default function EditButtonGenres({ genre }) {
         try {
             const res = await deleteGenre(genre.genre_id)
 
-            console.log("res", res);
 
             if (res.message) {
                 setMsg(res.message)
